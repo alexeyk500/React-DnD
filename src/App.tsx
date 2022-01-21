@@ -1,24 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import Container from "./Components/Container";
 
 function App() {
+
+  const [index, setIndex] = useState(0)
+
+  const amountElements = 28;
+
+  const containerList: number[] = []
+
+  for(let i=0; i < amountElements; i++) {
+    containerList.push(i)
+  }
+
+  const moveCard = (ind: number) => {
+    setIndex(ind)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {
+        containerList.map( (container, ind) => {
+          return (
+            <Container card={ind === index} moveCard={()=>{moveCard(ind)}} />
+          )
+        })
+      }
     </div>
   );
 }

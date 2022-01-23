@@ -4,22 +4,22 @@ import {CardType} from "../App";
 
 type PropsType = {
   card: CardType,
-  moveCard: (dragIndex: number, hoverIndex: number)=>void,
+  moveCard: (dragCard: CardType, hoverCard: CardType) => void,
 }
 
-const SortedCard:React.FC <PropsType> = ({card, moveCard}) => {
+const SortedCard: React.FC<PropsType> = ({card, moveCard}) => {
 
-  const [{ isDragging }, drag] = useDrag(
+  const [{isDragging}, drag] = useDrag(
     () => ({
       type: 'SortedCard',
       item: card,
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
-      end: (item, monitor) => {
+      end: (dragCard, monitor) => {
         const didDrop = monitor.didDrop()
         if (!didDrop) {
-          moveCard(item.id, card.id)
+          moveCard(dragCard, card)
         }
       },
     }),
@@ -29,27 +29,34 @@ const SortedCard:React.FC <PropsType> = ({card, moveCard}) => {
   const [, drop] = useDrop(
     () => ({
       accept: 'SortedCard',
-      hover({ id: draggedId }: CardType) {
-        if (draggedId !== card.id) {
-          moveCard(draggedId, card.id)
+      hover(hoverCard: CardType) {
+        if (hoverCard !== card) {
+          moveCard(hoverCard, card)
         }
       },
     }),
     [moveCard],
   );
 
+  const ref = useRef(null);
+  drag(drop(ref));
+
   return (
     <div
-      ref={(node) => drag(drop(node))}
+      ref={ref}
       className={'sortedCard'}
       style={{
         backgroundColor: card.color,
         opacity: isDragging ? 0 : 1
       }}
     >
-      {card.id}
+      <div className={'numCard'}>
+        {card.id}
+      </div>
     </div>
+
   );
 };
+
 
 export default SortedCard;

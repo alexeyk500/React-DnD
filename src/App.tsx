@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import './App.css';
-import Container from "./Components/Container";
 import SortedCard from "./Components/SortedCard";
 
 export type CardType = {
@@ -22,15 +21,29 @@ function App() {
 
   const [cardList, setCardList] = useState(cardsList)
 
-  const moveCard = (dragId: number, hoverId: number) => {
-    const dragCard = cardList.find(card => card.id === dragId);
-    const indexDragCard = cardList.indexOf(dragCard!)
-    const hoverCard = cardList.find(card => card.id === hoverId);
-    const indexHoverCard = cardList.indexOf(hoverCard!);
+  // const moveCard = (dragId: number, hoverId: number) => {
+  //   const dragCard = cardList.find(card => card.id === dragId);
+  //   const indexDragCard = cardList.indexOf(dragCard!)
+  //   const hoverCard = cardList.find(card => card.id === hoverId);
+  //   const indexHoverCard = cardList.indexOf(hoverCard!);
+  //   console.log(indexDragCard, indexHoverCard)
+  //   const newCardList = [...cardList];
+  //   // const hoverItem = newCardList[indexHoverCard];
+  //   // newCardList[indexHoverCard] = newCardList[indexDragCard];
+  //   // newCardList[indexDragCard] = hoverItem;
+  //   // setCardList(newCardList);
+  //   newCardList.splice(indexDragCard, 1)
+  //   newCardList.splice(indexHoverCard, 0, dragCard!)
+  //   setCardList(newCardList);
+  // }
+
+  const moveCard = (dragCard: CardType, hoverCard: CardType) => {
+    const indexDragCard = cardList.indexOf(dragCard)
+    const indexHoverCard = cardList.indexOf(hoverCard);
+    console.log(indexDragCard, indexHoverCard)
     const newCardList = [...cardList];
-    const hoverItem = newCardList[indexHoverCard];
-    newCardList[indexHoverCard] = newCardList[indexDragCard];
-    newCardList[indexDragCard] = hoverItem;
+    newCardList.splice(indexDragCard, 1)
+    newCardList.splice(indexHoverCard, 0, dragCard)
     setCardList(newCardList);
   }
 
